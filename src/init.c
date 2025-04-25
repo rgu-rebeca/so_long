@@ -6,7 +6,7 @@
 /*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:16:36 by rgu               #+#    #+#             */
-/*   Updated: 2025/04/26 00:48:35 by rgu              ###   ########.fr       */
+/*   Updated: 2025/04/26 01:06:03 by rgu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	init_mlx_and_screen(t_game *game)
 	if (game->width * TILE_SIZE > screen_width
 		|| game->height * TILE_SIZE > screen_height)
 	{
-		ft_printf("Error: Map too big for screen\n");
+		ft_printf("Error\nMap too big for screen\n");
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
 		return (0);
@@ -121,7 +121,7 @@ void	init_game(t_game *game)
 	}
 	if (load_image(game) == 0)
 	{
-		exit_game(game);
+		exit_game(game, 1);
 		ft_printf("Error: Image load failed\n");
 	}
 	game->moves = 0;

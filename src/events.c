@@ -6,7 +6,7 @@
 /*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:16:23 by rgu               #+#    #+#             */
-/*   Updated: 2025/04/26 00:24:16 by rgu              ###   ########.fr       */
+/*   Updated: 2025/04/26 01:03:46 by rgu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	move_player(t_game *game, int move_x, int move_y)
 	if (game->map[new_x][new_y] == 'E' && game->collectibles == 0)
 	{
 		ft_printf("you win! your total move is: %d\n", game->moves);
-		exit_game(game);
+		exit_game(game, 0);
 	}
 	if (game->map[new_x][new_y] == 'E' && game->collectibles > 0)
 		return ;
@@ -42,18 +42,23 @@ void	move_player(t_game *game, int move_x, int move_y)
 	draw_map(game);
 }
 
-void	exit_game(t_game *game)
+void	exit_game(t_game *game, int exit_code)
 {
 	free_map(game->map);
 	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_image(game->mlx, game->img_wall);
-	mlx_destroy_image(game->mlx, game->img_floor);
-	mlx_destroy_image(game->mlx, game->img_collect);
-	mlx_destroy_image(game->mlx, game->img_player);
+	if (game->img_wall)
+		mlx_destroy_image(game->mlx, game->img_wall);
+	if (game->img_floor)
+		mlx_destroy_image(game->mlx, game->img_floor);
+	if (game->img_collect)
+		mlx_destroy_image(game->mlx, game->img_collect);
+	if (game->img_player)
+		mlx_destroy_image(game->mlx, game->img_player);
+	if (game->img_exit)
 	mlx_destroy_image(game->mlx, game->img_exit);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
-	exit(0);
+	exit(exit_code);
 }
 
 int	handle_key(int keycode, void *param)
@@ -62,7 +67,7 @@ int	handle_key(int keycode, void *param)
 
 	game = (t_game *)param;
 	if (keycode == KEY_ESC)
-		exit_game(game);
+		exit_game(game, 0);
 	else if (keycode == KEY_UP || keycode == KEY_W)
 		move_player(game, -1, 0);
 	else if (keycode == KEY_DOWN || keycode == KEY_S)

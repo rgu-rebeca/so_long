@@ -6,7 +6,7 @@
 /*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:16:55 by rgu               #+#    #+#             */
-/*   Updated: 2025/04/25 23:54:01 by rgu              ###   ########.fr       */
+/*   Updated: 2025/04/26 01:04:39 by rgu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handler_exit(void *param)
 	t_game	*game;
 
 	game = (t_game *) param;
-	exit_game(game);
+	exit_game(game, 0);
 	return (1);
 }
 
