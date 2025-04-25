@@ -6,13 +6,13 @@
 /*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:16:55 by rgu               #+#    #+#             */
-/*   Updated: 2025/04/25 23:17:02 by rgu              ###   ########.fr       */
+/*   Updated: 2025/04/25 23:54:01 by rgu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 #include "../libft/libft.h"
-#include "../mlx/mlx.h"
+#include "../minilibx-linux/mlx.h"
 
 int	handler_exit(void *param)
 {

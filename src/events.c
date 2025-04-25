@@ -6,13 +6,13 @@
 /*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:16:23 by rgu               #+#    #+#             */
-/*   Updated: 2025/04/25 23:09:41 by rgu              ###   ########.fr       */
+/*   Updated: 2025/04/26 00:24:16 by rgu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 #include "../libft/libft.h"
-#include "../mlx/mlx.h"
+#include "../minilibx-linux/mlx.h"
 #include "../include/key_code.h"
 
 void	move_player(t_game *game, int move_x, int move_y)
@@ -58,7 +58,7 @@ void	exit_game(t_game *game)
 
 int	handle_key(int keycode, void *param)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = (t_game *)param;
 	if (keycode == KEY_ESC)

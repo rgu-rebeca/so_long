@@ -6,7 +6,7 @@
 /*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:16:43 by rgu               #+#    #+#             */
-/*   Updated: 2025/04/25 21:50:04 by rgu              ###   ########.fr       */
+/*   Updated: 2025/04/26 00:24:05 by rgu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	validate_map(char **map)
 	while (map[height])
 		height++;
 	if (!is_rectangular(map))
-		return (ft_printf("Error\nmap is not rectangular\n"),0);
+		return (ft_printf("Error\nmap is not rectangular\n"), 0);
 	if (!is_surrounded_by_wall(map))
 		return (ft_printf("Error\nmap is not surrounded by wall\n"), 0);
 	if (!check_necesary_elements(map))

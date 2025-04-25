@@ -6,15 +6,15 @@
 /*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 22:16:36 by rgu               #+#    #+#             */
-/*   Updated: 2025/04/25 23:35:01 by rgu              ###   ########.fr       */
+/*   Updated: 2025/04/26 00:48:35 by rgu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 #include "../libft/libft.h"
-#include "../mlx/mlx.h"
+#include "../minilibx-linux/mlx.h"
 
-void	load_image(t_game *game)
+int	load_image(t_game *game)
 {
 	int	w;
 	int	h;
@@ -28,6 +28,10 @@ void	load_image(t_game *game)
 			"asset/object.xpm", &w, &h);
 	game->img_exit = mlx_xpm_file_to_image(game->mlx,
 			"asset/exit.xpm", &w, &h);
+	if (!game->img_collect || !game->img_exit || !game->img_exit
+		|| !game->img_floor || !game->img_player || !game->img_wall)
+		return (0);
+	return (1);
 }
 
 void	find_player(t_game *game)
@@ -75,18 +79,33 @@ int	count_collectible(char **map)
 	return (count);
 }
 
-void	init_game(t_game *game)
+static int	init_mlx_and_screen(t_game *game)
 {
 	int	screen_width;
 	int	screen_height;
 
 	game->mlx = mlx_init();
 	if (!game->mlx)
-		ft_printf("mlx falied");
-	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
-	if (game->width * TILE_SIZE > screen_width || game->height * TILE_SIZE > screen_height)
 	{
-		ft_printf("Error\nThe map is too big for the screen.\n");
+		ft_printf("Error: MLX init failed\n");
+		return (0);
+	}
+	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
+	if (game->width * TILE_SIZE > screen_width
+		|| game->height * TILE_SIZE > screen_height)
+	{
+		ft_printf("Error: Map too big for screen\n");
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+		return (0);
+	}
+	return (1);
+}
+
+void	init_game(t_game *game)
+{
+	if (init_mlx_and_screen(game) == 0)
+	{
 		free_map(game->map);
 		exit(1);
 	}
@@ -94,11 +113,18 @@ void	init_game(t_game *game)
 			game->height * TILE_SIZE, "so_long");
 	if (!game->win)
 	{
-		ft_printf("win failed");
-		exit (1);
+		ft_printf("Error: Window creation failed\n");
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+		free_map(game->map);
+		exit(1);
+	}
+	if (load_image(game) == 0)
+	{
+		exit_game(game);
+		ft_printf("Error: Image load failed\n");
 	}
 	game->moves = 0;
 	find_player(game);
 	game->collectibles = count_collectible(game->map);
-	load_image(game);
 }
