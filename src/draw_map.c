@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 22:16:16 by rgu               #+#    #+#             */
+/*   Updated: 2025/04/25 23:16:42 by rgu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 #include "../libft/libft.h"
 #include "../mlx/mlx.h"
 
-static void	draw_tile(t_game *game, void *img, int x, int y)
+static void	draw_tile(t_game *game, void *img, int a, int b)
 {
 	mlx_put_image_to_window(game->mlx, game->win,
-		img, x * TILE_SIZE, y * TILE_SIZE);
+		img, a * TILE_SIZE, b * TILE_SIZE);
 }
 
 int	draw_map(t_game *game)
@@ -13,24 +25,29 @@ int	draw_map(t_game *game)
 	int	x;
 	int	y;
 
-	y = 0;
-	while (game->map[y])
+	x = 0;
+	while (game->map[x])
 	{
-		x = 0;
-		while (game->map[y][x])
+		y = 0;
+		while (game->map[x][y])
 		{
-			draw_tile(game, game->img_floor, x, y);
-			if (game->map[y][x] == '1')
-				draw_tile(game, game->img_wall, x, y);
-			else if (game->map[y][x] == 'P')
-				draw_tile(game, game->img_player, x, y);
-			else if (game->map[y][x] == 'C')
-				draw_tile(game, game->img_collect, x, y);
-			else if (game->map[y][x] == 'E')
-				draw_tile(game, game->img_exit, x, y);
-			x++;
+			draw_tile(game, game->img_floor, y, x);
+			if (game->map[x][y] == '1')
+				draw_tile(game, game->img_wall, y, x);
+			else if (game->map[x][y] == 'P')
+				draw_tile(game, game->img_player, y, x);
+			else if (game->map[x][y] == 'C')
+				draw_tile(game, game->img_collect, y, x);
+			else if (game->map[x][y] == 'E')
+				draw_tile(game, game->img_exit, y, x);
+			y++;
 		}
-		y++;
+		x++;
 	}
 	return (1);
+}
+
+int draw_map_wrapper(void *param)
+{
+    return draw_map((t_game *)param); 
 }

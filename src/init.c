@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 22:16:36 by rgu               #+#    #+#             */
+/*   Updated: 2025/04/25 23:35:01 by rgu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 #include "../libft/libft.h"
 #include "../mlx/mlx.h"
@@ -65,13 +77,26 @@ int	count_collectible(char **map)
 
 void	init_game(t_game *game)
 {
+	int	screen_width;
+	int	screen_height;
+
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		ft_printf("mlx falied");
+	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
+	if (game->width * TILE_SIZE > screen_width || game->height * TILE_SIZE > screen_height)
+	{
+		ft_printf("Error\nThe map is too big for the screen.\n");
+		free_map(game->map);
+		exit(1);
+	}
 	game->win = mlx_new_window(game->mlx, game->width * TILE_SIZE,
 			game->height * TILE_SIZE, "so_long");
 	if (!game->win)
+	{
 		ft_printf("win failed");
+		exit (1);
+	}
 	game->moves = 0;
 	find_player(game);
 	game->collectibles = count_collectible(game->map);

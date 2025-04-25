@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flood_fill.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 22:16:30 by rgu               #+#    #+#             */
+/*   Updated: 2025/04/25 22:05:17 by rgu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 #include "../libft/libft.h"
 
@@ -21,6 +33,8 @@ static char	**copy_map(char **map, int height)
 
 static void	flood_fill(char **map, int x, int y)
 {
+	if (x < 0 || y < 0 || !map[x] || !map[x][y])
+		return ;
 	if (map[x][y] == '1' || map[x][y] == 'F')
 		return ;
 	map[x][y] = 'F';
@@ -79,19 +93,18 @@ int	map_is_playable(char **map, int height)
 	int		py;
 	char	**copy;
 	int		result;
-	int		i;
 
 	px = 0;
 	py = 0;
-	i = 0;
 	copy = copy_map(map, height);
 	find_player(copy, &px, &py);
 	flood_fill(copy, px, py);
 	result = check_flood_result(copy);
 	if (result == 0)
+	{
+		free_map(copy);
 		return (0);
-	while (i < height - 1)
-		free(copy[i++]);
-	free(copy);
+	}
+	free_map(copy);
 	return (1);
 }

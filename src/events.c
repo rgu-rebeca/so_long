@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   events.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 22:16:23 by rgu               #+#    #+#             */
+/*   Updated: 2025/04/25 23:09:41 by rgu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 #include "../libft/libft.h"
 #include "../mlx/mlx.h"
@@ -8,15 +20,15 @@ void	move_player(t_game *game, int move_x, int move_y)
 	int	new_x;
 	int	new_y;
 
-	new_x = game->player_x + move_y;
-	new_y = game->player_y + move_x;
+	new_x = game->player_x + move_x;
+	new_y = game->player_y + move_y;
 	if (game->map[new_x][new_y] == '1')
 		return ;
 	if (game->map[new_x][new_y] == 'C')
 		game->collectibles--;
 	if (game->map[new_x][new_y] == 'E' && game->collectibles == 0)
 	{
-		printf("you win! your total move is: %d", game->moves);
+		ft_printf("you win! your total move is: %d\n", game->moves);
 		exit_game(game);
 	}
 	if (game->map[new_x][new_y] == 'E' && game->collectibles > 0)
@@ -26,12 +38,13 @@ void	move_player(t_game *game, int move_x, int move_y)
 	game->map[new_x][new_y] = 'P';
 	game->player_x = new_x;
 	game->player_y = new_y;
-	printf("total moves: %d\n", game->moves);
+	ft_printf("total moves: %d\n", game->moves);
 	draw_map(game);
 }
 
 void	exit_game(t_game *game)
 {
+	free_map(game->map);
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_image(game->mlx, game->img_wall);
 	mlx_destroy_image(game->mlx, game->img_floor);
@@ -43,17 +56,20 @@ void	exit_game(t_game *game)
 	exit(0);
 }
 
-int	handle_key(int keycode, t_game *game)
+int	handle_key(int keycode, void *param)
 {
+	t_game *game;
+
+	game = (t_game *)param;
 	if (keycode == KEY_ESC)
 		exit_game(game);
-	else if (keycode == KEY_UP)
-		move_player(game, 0, -1);
-	else if (keycode == KEY_DOWN)
-		move_player(game, 0, 1);
-	else if (keycode == KEY_LEFT)
+	else if (keycode == KEY_UP || keycode == KEY_W)
 		move_player(game, -1, 0);
-	else if (keycode == KEY_RIGHT)
+	else if (keycode == KEY_DOWN || keycode == KEY_S)
 		move_player(game, 1, 0);
+	else if (keycode == KEY_LEFT || keycode == KEY_A)
+		move_player(game, 0, -1);
+	else if (keycode == KEY_RIGHT || keycode == KEY_D)
+		move_player(game, 0, 1);
 	return (0);
 }

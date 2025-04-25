@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 22:16:50 by rgu               #+#    #+#             */
+/*   Updated: 2025/04/25 22:45:51 by rgu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 #include "../libft/libft.h"
 
@@ -32,7 +44,7 @@ char	*get_line(int fd)
 	i = 0;
 	line = malloc(1024);
 	if (!line)
-		return (NULL);
+		return (close(fd), NULL);
 	while (read(fd, &c, 1) > 0 && c != '\n')
 	{
 		line[i] = c;
@@ -56,7 +68,7 @@ int	load_map(char *filename, t_game *game)
 		return (0);
 	game->map = malloc(sizeof(char *) * (game->height + 1));
 	if (!game->map)
-		return (0);
+		return (close(fd), 0);
 	while (i < game->height)
 	{
 		game->map[i] = get_line(fd);
@@ -67,6 +79,18 @@ int	load_map(char *filename, t_game *game)
 	game->map[i] = NULL;
 	close (fd);
 	return (1);
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	if (!map)
+		return ;
+	while (map[i])
+		free (map[i++]);
+	free(map);
 }
 
 /*void	print_map(char **map)

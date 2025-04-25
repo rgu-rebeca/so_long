@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_validation.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgu <rgu@student.42madrid.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 22:16:43 by rgu               #+#    #+#             */
+/*   Updated: 2025/04/25 21:50:04 by rgu              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 #include "../libft/libft.h"
 
@@ -92,10 +104,13 @@ int	validate_map(char **map)
 	height = 0;
 	while (map[height])
 		height++;
-	if (!is_rectangular(map) || !is_surrounded_by_wall(map)
-		|| !check_necesary_elements(map))
-		return (0);
+	if (!is_rectangular(map))
+		return (ft_printf("Error\nmap is not rectangular\n"),0);
+	if (!is_surrounded_by_wall(map))
+		return (ft_printf("Error\nmap is not surrounded by wall\n"), 0);
+	if (!check_necesary_elements(map))
+		return (ft_printf("Error\nelements in map are not correct\n"), 0);
 	if (!map_is_playable(map, height))
-		return (0);
+		return (ft_printf("Error\nmap is not playable\n"), 0);
 	return (1);
 }

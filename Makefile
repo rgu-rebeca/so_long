@@ -1,6 +1,6 @@
 NAME = so_long
 
-cc = gcc
+cc = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRC_DIR = src
@@ -28,6 +28,6 @@ clean:
 	rm -f $(OBJ)
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	rm -f $(OBJ)
+	rm -f $(NAME)
 re: fclean all
 .PHONY: all clean fclean re
